@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import { UserApiService } from './service/UserApiService';
-import { shuffleservice } from './service/ShuffleService';
+import ShuffleService from './service/ShuffleService';
 
 class App extends Component {
 
@@ -10,23 +10,23 @@ class App extends Component {
     UserApiService
       .getUsers({ department: 'engineering' })
       .then(response => {
-       
-        // TODO remove here
+        // TODO remove here //*******************
         const tempPrint = response.users.reduce((acc, {name}) => {
           acc = acc.concat(name.first+'-'+name.last).concat(' === ')
           return acc;
         }, '');
         console.log(tempPrint)
+        //******************* */
 
         let employees = response.users
 
-        const giversReceives = shuffleservice.buildGiverReceiver(employees)
+        const giversReceives = ShuffleService.buildGiverReceiver(employees)
 
         console.log('Result giversReceives', giversReceives)
 
         console.log('Now reverse givers')
 
-        const newReceivers = shuffleservice.giverBecomeReceiver(giversReceives)
+        const newReceivers = ShuffleService.giverBecomeReceiver(giversReceives)
 
         console.log('*** new Receivers ******', newReceivers)
 

@@ -1,27 +1,28 @@
 import { Utils } from '../common/Utils';
 
-export const shuffleservice = {
+const ShuffleService = {
     buildGiverReceiver(employees) {
         console.log('** list full size ** ', employees.length)
         const result = []
-
-        while (employees.length > 0) {
+        
+        while (employees.length > 0 ) {
+            
             const currentEmployee = employees.shift()
             // const key = `${currentEmployee.name.first}-${currentEmployee.name.last}`
             if (employees.length > 1) {
                 const ramdomEmployee = Utils.getRandomName(employees)
 
-                const fullname = getFullName(ramdomEmployee);
-                employees = Utils.removeNameFromList(fullname, employees)
+                const fullnameRandonEmp = getFullName(ramdomEmployee);
+                employees = Utils.removeNameFromList(fullnameRandonEmp, employees)
 
-                console.log(`${currentEmployee.name.first} --> ${ramdomEmployee.name.first} Pairing`)
+                const fullnameCurrent = getFullName(currentEmployee)
 
-                //result[key] = fullname
-                result.push({
+                console.log(`${fullnameCurrent} --> ${fullnameRandonEmp} Pairing`)
+
+                result[fullnameRandonEmp] = {
                     'giver': currentEmployee,
                     'receiver': ramdomEmployee
-                })
-
+                }
             } else {
                 console.error(`List has an ODD size, Missing pairing for ${currentEmployee.name.first}`)
                 // result[key] = `None`
@@ -32,97 +33,65 @@ export const shuffleservice = {
     giverBecomeReceiver(giverReceiverList) {
         const result = []
 
-        let prevGivers = buildNewListForShuffle(giverReceiverList)
-       // let prevReceivers = onlyReceivers(giverReceiverList)
+        let newReceivers = getNewReceivers(giverReceiverList)
+        let newGivers = getNewGivers(giverReceiverList);
+       
+        let giver = newGivers[0]
+        let receiver = newReceivers[newReceivers.length - 1]
+        while (newGivers.length > 0) {
+            const reciverName = getFullName(receiver)
+            const giverName = getFullName(giver)
+            const prevGiver = giverReceiverList[giverName] 
+            const prevGiverName = prevGiver && getFullName(prevGiver.giver)
 
-        giverReceiverList.forEach(({ giver, receiver }, index) => {
-            //build a list without this element currentKey
-            // console.log('giver', item.giver.name)
-            // console.log('prevReceiver', prevReceiver.name.first)
-
-            printerTest(prevGivers)
-
-            let excludeNames = {
-                giverName: getFullName(giver),
-                prevReceiverName: getFullName(receiver),
-                nextNameColition: null
+            if(!prevGiverName) {
+                throw new Error(`Object is not built correctly, ${giverName} not found`)
             }
-            const beforeLastIndex = giverReceiverList.length - 2
-            if (index === beforeLastIndex) {
-                const nextGiver = giverReceiverList[index + 1].giver
-                console.log(getFullName(nextGiver))
-                excludeNames.nextNameColition = prevGivers.filter(giv => getFullName(giv) !== getFullName(nextGiver))
-                 console.log('nextNameColition '+beforeLastIndex +'->'+index, excludeNames.nextNameColition )
+
+            //  console.log('********',prevGiverName)
+            //  console.log('********reciverName',reciverName)
+
+            if (reciverName !== prevGiverName) {
+                result[reciverName] = {
+                    giver,
+                    receiver
+                }
+                console.log(`${giverName} --> ${getFullName(receiver)} Pairing`)
+                const removeGiverFromList = giv => getFullName(giv) !== giverName
+                const removeReceiverFromList = rec => getFullName(rec) !== reciverName
+                newGivers = newGivers.filter(removeGiverFromList)
+                newReceivers = newReceivers.filter(removeReceiverFromList)
+
+                giver = newGivers[0]
+                receiver = newReceivers[newReceivers.length - 1]
+            } else {
+                giver = newGivers[1]
             }
-           
-            const filterNamesCannotBeReceiver = filterNames(excludeNames, prevGivers)
-            const ramdomEmployee = Utils.getRandomName(filterNamesCannotBeReceiver)
-
-            console.log(`${receiver.name.first} --> `)
-            
-            console.log(` ${ramdomEmployee.name.first} Pairing `)
-
-            result.push({
-                'giver': receiver,
-                'receiver': ramdomEmployee
-            })
-
-            prevGivers = Utils.removeNameFromList(getFullName(ramdomEmployee), prevGivers)
-            // console.log('new list for shuffle', employeesForNewShuffle.length)
-        })
+        }
         return result
     }
 }
 
+//TODO MOVE to UTILS!! 
 function getFullName({ name }) {
     return `${name.first}-${name.last}`
 }
 
 // rethink here maybe dont need the receiver in the result
-function buildNewListForShuffle(giverReceiverMap) {
-    const temp = giverReceiverMap
-        .reduce((prev, item) => {
+function getNewReceivers(giverReceiverMap) {
+    return Object.entries(giverReceiverMap)
+        .reduce((prev, [key, item]) => {
             prev.push(item.giver)
             return prev
         }, [])
-    return temp
+
 }
-function onlyReceivers(giverReceiverMap) {
-    const temp = giverReceiverMap
-        .reduce((prev, item) => {
+function getNewGivers(giverReceiverMap) {
+    return Object.entries(giverReceiverMap)
+        .reduce((prev, [key, item]) => {
             prev.push(item.receiver)
             return prev
         }, [])
-    return temp
 }
 
-function filterNames({ giverName, prevReceiverName, nextNameColition }, employeesForNewShuffle) {
-    //filter here cur key
-    return employeesForNewShuffle.filter(employee => {
-        const currentName = getFullName(employee)
-
-        const blackListNames = [
-            giverName,
-            prevReceiverName,
-            nextNameColition
-        ]
-        //console.log(' * * * ' + currentName, blackListNames.find(name => name === currentName) ? false : true)
-        return blackListNames.find(name => name === currentName) ? false : true
-
-        // return currentName !== giverName && currentName !== prevReceiverName
-    })
-}
-
-
-// TODO delete below
-
-function printerTest(employeesForNewShuffle) {
-
-
-    const t = employeesForNewShuffle.reduce((acc, item) => {
-        acc = acc.concat(getFullName(item)).concat('\n')
-        return acc
-    }, '\n')
-    console.log('LEFT  ----------------  ', t)
-    console.log('--------------------')
-}
+export default ShuffleService
