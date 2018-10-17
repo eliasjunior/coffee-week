@@ -1,32 +1,26 @@
 import { Utils } from '../common/Utils';
 
 const ShuffleService = {
-    buildGiverReceiver(employees) {
-        console.log('** list full size ** ', employees.length)
+    buildGiverReceiver(_employees) {
+        let employees = Object.assign([], _employees)
         const result = []
-        
-        while (employees.length > 0 ) {
-            
-            const currentEmployee = employees.shift()
-            // const key = `${currentEmployee.name.first}-${currentEmployee.name.last}`
+        let temp = 0
+        while (employees.length > 0 && temp < 18) {
+            const currentEmployee = Utils.getRandomUserAndRemoveIt(employees)
+
             if (employees.length > 1) {
-                const ramdomEmployee = Utils.getRandomName(employees)
+                const ramdomEmployee = Utils.getRandomUserAndRemoveIt(employees)
 
-                const fullnameRandonEmp = getFullName(ramdomEmployee);
-                employees = Utils.removeNameFromList(fullnameRandonEmp, employees)
-
-                const fullnameCurrent = getFullName(currentEmployee)
-
-                console.log(`${fullnameCurrent} --> ${fullnameRandonEmp} Pairing`)
+                const fullnameRandonEmp = Utils.getFullName(ramdomEmployee);
 
                 result[fullnameRandonEmp] = {
                     'giver': currentEmployee,
                     'receiver': ramdomEmployee
                 }
             } else {
-                console.error(`List has an ODD size, Missing pairing for ${currentEmployee.name.first}`)
-                // result[key] = `None`
+                console.error(`List has an ODD length, Missing pairing for ${currentEmployee.name.first}`)
             }
+            temp++
         }
         return result;
     },
@@ -35,30 +29,29 @@ const ShuffleService = {
 
         let newReceivers = getNewReceivers(giverReceiverList)
         let newGivers = getNewGivers(giverReceiverList);
-       
+
         let giver = newGivers[0]
         let receiver = newReceivers[newReceivers.length - 1]
         while (newGivers.length > 0) {
-            const reciverName = getFullName(receiver)
-            const giverName = getFullName(giver)
-            const prevGiver = giverReceiverList[giverName] 
-            const prevGiverName = prevGiver && getFullName(prevGiver.giver)
+            const reciverName = Utils.getFullName(receiver)
+            const giverName = Utils.getFullName(giver)
+            const prevGiver = giverReceiverList[giverName]
+            const prevGiverName = prevGiver && Utils.getFullName(prevGiver.giver)
 
-            if(!prevGiverName) {
+            if (!prevGiverName) {
                 throw new Error(`Object is not built correctly, ${giverName} not found`)
             }
-
-            //  console.log('********',prevGiverName)
-            //  console.log('********reciverName',reciverName)
 
             if (reciverName !== prevGiverName) {
                 result[reciverName] = {
                     giver,
                     receiver
                 }
-                console.log(`${giverName} --> ${getFullName(receiver)} Pairing`)
-                const removeGiverFromList = giv => getFullName(giv) !== giverName
-                const removeReceiverFromList = rec => getFullName(rec) !== reciverName
+                // console.log(`${giverName} --> ${Utils.getFullName(receiver)} Pairing`)
+                const removeGiverFromList = giv => Utils.getFullName(giv) !== giverName
+                const removeReceiverFromList = rec => Utils.getFullName(rec) !== reciverName
+                // removes the item with filter, these function below is not worry about performance, 
+                // if performance was concern, I'd take another approach
                 newGivers = newGivers.filter(removeGiverFromList)
                 newReceivers = newReceivers.filter(removeReceiverFromList)
 
@@ -70,11 +63,6 @@ const ShuffleService = {
         }
         return result
     }
-}
-
-//TODO MOVE to UTILS!! 
-function getFullName({ name }) {
-    return `${name.first}-${name.last}`
 }
 
 // rethink here maybe dont need the receiver in the result

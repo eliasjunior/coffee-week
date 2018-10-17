@@ -3,7 +3,7 @@ export const Utils = {
         if (!filter) {
             return ''
         }
-        // this could be tricky, for real apps I'd use an library like lodash to check if it's an object because it's well tested
+        // just basic validation for type
         if (typeof filter !== 'object' || Array.isArray(filter)) {
             throw new Error("Invalid parameter type")
         }
@@ -17,21 +17,16 @@ export const Utils = {
 
         return '?'.concat(parameters);
     },
-    getRandomName(employees) {
-        //var rand = myArray[Math.floor(Math.random() * myArray.length)];
-        const randomIndex = Math.floor(Math.random() * employees.length);
+    getRandomUserAndRemoveIt(users) {
+        const randomIndex = Math.floor(Math.random() * users.length);
 
-        if(!employees[randomIndex]) {
-            console.log('OOOPS ', employees, randomIndex)
+        if(!users[randomIndex]) {
+            console.log('OOOPS employee not found ', users, randomIndex)
         }
 
-        return employees[randomIndex]
-    },
-    removeNameFromList(fullname, employees) {
-        return employees.filter(emp => {
-            const filterName = `${emp.name.first}-${emp.name.last}`
-            return filterName !== fullname
-        })
+        const userToTake = Object.assign(users[randomIndex]) 
+        users.splice(randomIndex, 1);
+        return userToTake
     },
     removeElementFromMap(removeKey, obj) {
         const temp = Object.entries(obj).reduce((acc, [key, value]) => {
@@ -40,10 +35,9 @@ export const Utils = {
             }
             return acc;
         }, {})
-
-        // console.log('removeElementFromObj ' + removeKey, temp)
         return temp
     },
-   
-
+    getFullName({ name }) {
+        return `${name.first}-${name.last}`
+    }
 }
