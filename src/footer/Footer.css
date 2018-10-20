@@ -1,0 +1,10 @@
+.footer {
+    background: rgba(215, 179, 178, 0.974);
+}
+
+button {
+    font-size: 100%;
+    font-family: inherit;
+    border:0;
+    padding: 0;
+}

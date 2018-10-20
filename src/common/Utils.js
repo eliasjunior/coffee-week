@@ -9,10 +9,15 @@ export const Utils = {
         }
         const parameters = Object.entries(filter)
             .map(([key, value]) => {
-                return key
+                if(value) {
+                    return key
                     .concat('=')
                     .concat(value)
+                } else {
+                    return ''
+                }
             })
+            .filter(par => par !== '')
             .join('&')
 
         return '?'.concat(parameters);
@@ -21,7 +26,7 @@ export const Utils = {
         const randomIndex = Math.floor(Math.random() * users.length);
 
         if(!users[randomIndex]) {
-            console.log('OOOPS employee not found ', users, randomIndex)
+            throw new Error(`Oops employee not found`)
         }
 
         const userToTake = Object.assign(users[randomIndex]) 
@@ -37,7 +42,10 @@ export const Utils = {
         }, {})
         return temp
     },
-    getFullName({ name }) {
+    getNameKey({ name }) {
         return `${name.first}-${name.last}`
+    },
+    getFullName({ name }) {
+        return `${name.first} ${name.last}`
     }
 }

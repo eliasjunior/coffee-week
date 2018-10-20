@@ -1,4 +1,4 @@
-import { Utils } from "./Utils";
+import { Utils } from "../Utils";
 
 describe('Utils', () => {
     it('should return empty string', () => {
@@ -23,16 +23,22 @@ describe('Utils', () => {
         expect(Utils.getParameters({department: 'engineering', location: 'dub', email:'elias@gmail.com'}))
             .toEqual('?department=engineering&location=dub&email=elias@gmail.com')        
     })
-    // it('should give a randon name', () => {
-    //     const list = [
-    //         {first: "Brennon", last: "Breitenberg"},
-    //         {first: "Payton", last: "Corwin"},
-    //         {first: "Alta", last: "Christiansen"}
-    //     ]
-    //     const res1 = Utils.getRandomName(list)
-    //     const res2 = Utils.getRandomName(list)
-    //     const res3 = Utils.getRandomName(list)
-
-    //     expect((res1 !== res2) && (res1 !== res3)).toBe(true)
-    // })
+    it('should build the full name', () => {
+        const user = {
+            name: {
+                first: 'Elias',
+                last: 'Junior'
+            }
+        }
+        expect(Utils.getNameKey(user)).toEqual('Elias-Junior')
+    })
+    it('should get full name to display', () => {
+        const user = {
+            name: {
+                first: 'Elias',
+                last: 'Junior'
+            }
+        }
+        expect(Utils.getFullName(user)).toEqual('Elias Junior')
+    })
 })

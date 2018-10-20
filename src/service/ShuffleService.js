@@ -2,27 +2,31 @@ import { Utils } from '../common/Utils';
 
 const ShuffleService = {
     buildGiverReceiver(_employees) {
-        let employees = Object.assign([], _employees)
-        const result = []
-        let temp = 0
-        while (employees.length > 0 && temp < 18) {
-            const currentEmployee = Utils.getRandomUserAndRemoveIt(employees)
+        try {
+            let employees = Object.assign([], _employees)
+            const result = []
+            while (employees.length > 0) {
+                const currentEmployee = Utils.getRandomUserAndRemoveIt(employees)
+                console.log(`Size ${employees.length} ${Utils.getNameKey(currentEmployee)}`)
 
-            if (employees.length > 1) {
-                const ramdomEmployee = Utils.getRandomUserAndRemoveIt(employees)
+                if (employees.length > 0) {
+                    const ramdomEmployee = Utils.getRandomUserAndRemoveIt(employees)
+                    console.log(`Size ${employees.length} ${Utils.getNameKey(ramdomEmployee)}`)
 
-                const fullnameRandonEmp = Utils.getFullName(ramdomEmployee);
+                    const fullnameRandonEmp = Utils.getNameKey(ramdomEmployee);
 
-                result[fullnameRandonEmp] = {
-                    'giver': currentEmployee,
-                    'receiver': ramdomEmployee
+                    result[fullnameRandonEmp] = {
+                        'giver': currentEmployee,
+                        'receiver': ramdomEmployee
+                    }
+                } else {
+                    console.error(`List has an ODD length, Missing pairing for ${Utils.getNameKey(currentEmployee)}`)
                 }
-            } else {
-                console.error(`List has an ODD length, Missing pairing for ${currentEmployee.name.first}`)
             }
-            temp++
+            return result;
+        } catch (error) {
+            throw error
         }
-        return result;
     },
     giverBecomeReceiver(giverReceiverList) {
         const result = []
@@ -33,10 +37,10 @@ const ShuffleService = {
         let giver = newGivers[0]
         let receiver = newReceivers[newReceivers.length - 1]
         while (newGivers.length > 0) {
-            const reciverName = Utils.getFullName(receiver)
-            const giverName = Utils.getFullName(giver)
+            const reciverName = Utils.getNameKey(receiver)
+            const giverName = Utils.getNameKey(giver)
             const prevGiver = giverReceiverList[giverName]
-            const prevGiverName = prevGiver && Utils.getFullName(prevGiver.giver)
+            const prevGiverName = prevGiver && Utils.getNameKey(prevGiver.giver)
 
             if (!prevGiverName) {
                 throw new Error(`Object is not built correctly, ${giverName} not found`)
@@ -47,9 +51,9 @@ const ShuffleService = {
                     giver,
                     receiver
                 }
-                // console.log(`${giverName} --> ${Utils.getFullName(receiver)} Pairing`)
-                const removeGiverFromList = giv => Utils.getFullName(giv) !== giverName
-                const removeReceiverFromList = rec => Utils.getFullName(rec) !== reciverName
+                // console.log(`${giverName} --> ${Utils.getNameKey(receiver)} Pairing`)
+                const removeGiverFromList = giv => Utils.getNameKey(giv) !== giverName
+                const removeReceiverFromList = rec => Utils.getNameKey(rec) !== reciverName
                 // removes the item with filter, these function below is not worry about performance, 
                 // if performance was concern, I'd take another approach
                 newGivers = newGivers.filter(removeGiverFromList)
