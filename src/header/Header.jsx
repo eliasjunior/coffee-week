@@ -1,16 +1,21 @@
 import React from 'react'
-import './header.css'
-import Actions from './Actions'
+import PropTypes from 'prop-types'
+import './Header.css'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-function Header(props) {
+function Header({children}) {
     return (
         <div className="header">
-            <div>Coffee Week!</div>
-            <Actions 
-                onSelectDept={props.onSelectDept}
-                onSelectLocation={props.onSelectLocation}>
-            </Actions>
+            <div className="main-text">
+                <FontAwesomeIcon icon="coffee" />
+                <span>Coffee Week!</span>
+            </div>
+            {children}
         </div>
     )
+}
+Header.propTypes = {
+    onSelectDept: PropTypes.func,
+    onSelectLocation: PropTypes.func
 }
 export default Header;

@@ -1,10 +1,22 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import './App.css';
-import { UserApiService } from './service/UserApiService';
-import ShuffleService from './service/ShuffleService';
+import { UserApiService } from './service/UserApiService'
+import ShuffleService from './service/ShuffleService'
 import Header from './header/Header'
-import ListView from './shuffle/ListView'
+import Actions from './header/Actions'
+import ListView from './main-content/ListView'
+import Dashboard from './main-content/Dashboard'
 import Footer from './footer/Footer'
+import { library } from '@fortawesome/fontawesome-svg-core'
+import {
+  faCoffee,
+  faHandHoldingUsd,
+  faArrowRight,
+  faExchangeAlt,
+  faRandom
+} from '@fortawesome/free-solid-svg-icons'
+
+library.add(faCoffee, faHandHoldingUsd, faArrowRight, faExchangeAlt, faRandom);
 
 class App extends Component {
   state = {
@@ -13,15 +25,15 @@ class App extends Component {
     location: null,
     department: null
   }
-  // avoid memory leek
-  _isRequestMounted = false
+  // avoid memory leek for ajax call as there is no way to cancel a promise.(https://www.youtube.com/watch?v=8BNdxFzMeVg) 
+  _isRequestMounted = true
   componentDidMount() {
     requestUsers.call(this)
   }
   componentWillUnmount() {
-    this.setState({ _isRequestMounted: true })
+    this.setState({ _isRequestMounted: false })
   }
-  startShuffle = () => {
+  shuffle = () => {
     try {
       const coffeePairings = ShuffleService.buildGiverReceiver(this.state.employees)
       this.setState({ coffeePairings })
@@ -29,8 +41,8 @@ class App extends Component {
       throw error
     }
   }
-  reShuffle = () => {
-    const newCoffeePairs = ShuffleService.giverBecomeReceiver(this.state.coffeePairings)
+  reversePair = () => {
+    const newCoffeePairs = ShuffleService.reversePair(this.state.coffeePairings)
     this.setState({ coffeePairings: newCoffeePairs })
   }
   selectDepartment = (value) => {
@@ -55,17 +67,21 @@ class App extends Component {
     const {
       coffeePairings
     } = this.state
+    if (!Object.keys(coffeePairings)) {
+      throw new Error('User data wrong format')
+    }
     const pairingLength = Object.keys(coffeePairings).length
     return (
       <div className='wrapper'>
-        <Header
-          onSelectDept={this.selectDepartment}
-          onSelectLocation={this.selectLocation}>
+        <Header>
+          <Actions onSelectDept={this.selectDepartment}
+            onSelectLocation={this.selectLocation}>
+          </Actions>
         </Header>
-        <ListView coffeePairings={coffeePairings}></ListView>
+        {displayMainContent(pairingLength, coffeePairings)}
         <Footer
-          onReShuffle={this.reShuffle}
-          onStart={this.startShuffle}
+          onReversePair={this.reversePair}
+          onShuffle={this.shuffle}
           isReverseVisible={pairingLength > 0}>
         </Footer>
       </div>
@@ -73,6 +89,7 @@ class App extends Component {
   }
 }
 
+// private function request users
 async function requestUsers(options) {
   try {
     const response = await UserApiService.getUsers(options)
@@ -84,4 +101,13 @@ async function requestUsers(options) {
     throw new Error(error)
   }
 }
+
+function displayMainContent(pairingLength, coffeePairings) {
+  if (pairingLength > 0) {
+    return <ListView coffeePairings={coffeePairings}></ListView>
+  } else {
+    return <Dashboard></Dashboard>
+  }
+}
+
 export default App;

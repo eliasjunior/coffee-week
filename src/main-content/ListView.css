@@ -1,0 +1,36 @@
+.main-content {
+    display: flex;
+    flex-flow: row wrap;
+    align-content: baseline;
+}
+.line-item {
+    background: #a07854;
+    font-family: inherit;
+    border-radius: 5px;
+    padding: 5px;
+    width: 200px;
+    height: 50px;
+    margin: 10px;
+    color: white;
+    font-size: 0.8em;
+    text-align: left;
+}
+
+.line-item span {
+    margin-left: 5px
+}
+
+
+/* Small screens */
+@media all and (max-width: 450px) {
+    .line-item {
+        line-height: 45px;
+    }
+}
+
+/* Mediam screens */
+@media all and (min-width: 450px) and (max-width: 800px) {
+    .line-item {
+        line-height: normal;
+    }
+}

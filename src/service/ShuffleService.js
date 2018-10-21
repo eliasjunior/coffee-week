@@ -7,11 +7,9 @@ const ShuffleService = {
             const result = []
             while (employees.length > 0) {
                 const currentEmployee = Utils.getRandomUserAndRemoveIt(employees)
-                console.log(`Size ${employees.length} ${Utils.getNameKey(currentEmployee)}`)
 
                 if (employees.length > 0) {
                     const ramdomEmployee = Utils.getRandomUserAndRemoveIt(employees)
-                    console.log(`Size ${employees.length} ${Utils.getNameKey(ramdomEmployee)}`)
 
                     const fullnameRandonEmp = Utils.getNameKey(ramdomEmployee);
 
@@ -28,14 +26,25 @@ const ShuffleService = {
             throw error
         }
     },
-    giverBecomeReceiver(giverReceiverList) {
+    reversePair(giverReceiverList) {
         const result = []
 
+        /*
+        cross the lists(newReceivers, newGivers) first item and last one
+        if there is no conflict(previous giver receives from  the prev receiver that's now is a giver )
+        then the 2 users are removed from the list
+        */
         let newReceivers = getNewReceivers(giverReceiverList)
         let newGivers = getNewGivers(giverReceiverList);
 
         let giver = newGivers[0]
         let receiver = newReceivers[newReceivers.length - 1]
+
+        if(newGivers.length === 1) {
+            // we can replace this erros to validations and display to the user nicely
+            throw new Error(`Number of user need to be greater than 2`)
+        }
+
         while (newGivers.length > 0) {
             const reciverName = Utils.getNameKey(receiver)
             const giverName = Utils.getNameKey(giver)
@@ -51,11 +60,10 @@ const ShuffleService = {
                     giver,
                     receiver
                 }
-                // console.log(`${giverName} --> ${Utils.getNameKey(receiver)} Pairing`)
                 const removeGiverFromList = giv => Utils.getNameKey(giv) !== giverName
                 const removeReceiverFromList = rec => Utils.getNameKey(rec) !== reciverName
                 // removes the item with filter, these function below is not worry about performance, 
-                // if performance was concern, I'd take another approach
+                // if performance is a concern, I'd take another approach
                 newGivers = newGivers.filter(removeGiverFromList)
                 newReceivers = newReceivers.filter(removeReceiverFromList)
 
@@ -68,8 +76,6 @@ const ShuffleService = {
         return result
     }
 }
-
-// rethink here maybe dont need the receiver in the result
 function getNewReceivers(giverReceiverMap) {
     return Object.entries(giverReceiverMap)
         .reduce((prev, [key, item]) => {

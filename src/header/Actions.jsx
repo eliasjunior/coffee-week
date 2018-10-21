@@ -1,7 +1,8 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import AppConstant from '../common/AppConstant'
+import './Actions.css'
 
-//TODO pass locations and department as props
 function Actions(props) {
     const selectDepartment = () => {
         return AppConstant
@@ -11,10 +12,10 @@ function Actions(props) {
     const selectLocation = () => {
         return AppConstant
             .locationOptions
-            .map(loc => <option key={loc.value}  value={loc.value}>{loc.label}</option>)
+            .map(loc => <option key={loc.value} value={loc.value}>{loc.label}</option>)
     }
 
-    return <div>
+    return <div className='actions-btn'>
         <select onChange={e => props.onSelectDept(e.target.value)}>
             <option value=''>Select Department</option>
             {selectDepartment()}
@@ -24,8 +25,9 @@ function Actions(props) {
             {selectLocation()}
         </select>
     </div>
-
-
 }
-
+Actions.propTypes = {
+    onSelectDept: PropTypes.func,
+    onSelectLocation: PropTypes.func
+}
 export default Actions

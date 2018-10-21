@@ -1,9 +1,9 @@
 import React from 'react'
-import ListView from '../ListView'
+import Dashboard from '../Dashboard'
 import {shallow} from 'enzyme'
 
 describe('ListView', () => {
     it('should render the component', () => {
-        shallow(<ListView coffePairings={{'test' : {name: ''}}}/>)
+        shallow(<Dashboard/>)
     })
 })
