@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-//import './Header.css'
+import './header.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 function Header({children}) {
@@ -18,4 +18,4 @@ Header.propTypes = {
     onSelectDept: PropTypes.func,
     onSelectLocation: PropTypes.func
 }
-export default Header;
+export default Header
