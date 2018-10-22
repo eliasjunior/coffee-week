@@ -3,8 +3,6 @@
   flex-flow: row wrap;
   font-weight: bold;
   text-align: left;
- 
-
 }
 
 /* We tell all items to be 100% width, via flex-basis */

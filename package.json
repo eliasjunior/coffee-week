@@ -12,6 +12,10 @@
     "react-dom": "^16.5.2",
     "react-scripts": "2.0.4"
   },
+  "engines": {
+    "node": "10.10.0",
+    "npm": "6.4.1"
+  },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",

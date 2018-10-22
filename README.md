@@ -1,3 +1,7 @@
+Coffee week app
+
+The app main view 
+
 
 
 ## Table of Contents

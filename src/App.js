@@ -17,7 +17,6 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 
 library.add(faCoffee, faHandHoldingUsd, faArrowRight, faExchangeAlt, faRandom);
-
 class App extends Component {
   state = {
     coffeePairings: [],
