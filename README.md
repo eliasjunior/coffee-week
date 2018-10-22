@@ -8,7 +8,7 @@ Below you will find some information on how to perform common tasks.<br>
 
   - [npm install](#npm-install)
   - [npm start](#npm-start)
-  - [production mode](#production-mode)
+  
 - [Available Scripts](#available-scripts)
 
   - [npm test](#npm-test)
@@ -28,10 +28,6 @@ After that It should be good to run the app.<br>
 
 Runs the app in the development mode.<br>
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-### `production mode`
-
-  TODO
 
 ## Available Scripts
 
