@@ -22,7 +22,8 @@ class App extends Component {
     coffeePairings: [],
     employees: [],
     location: null,
-    department: null
+    department: null,
+    isReverseVisible: false
   }
   // avoid memory leek for ajax call as there is no way to cancel a promise.(https://www.youtube.com/watch?v=8BNdxFzMeVg) 
   _isRequestMounted = true
@@ -35,14 +36,20 @@ class App extends Component {
   shuffle = () => {
     try {
       const coffeePairings = ShuffleService.buildGiverReceiver(this.state.employees)
-      this.setState({ coffeePairings })
+      this.setState({ 
+        coffeePairings, 
+        isReverseVisible: true 
+      })
     } catch (error) {
       throw error
     }
   }
   reversePair = () => {
     const newCoffeePairs = ShuffleService.reversePair(this.state.coffeePairings)
-    this.setState({ coffeePairings: newCoffeePairs })
+    this.setState({ 
+        coffeePairings: newCoffeePairs, 
+        isReverseVisible: false 
+    })
   }
   selectDepartment = (value) => {
     const department = { department: value }
@@ -64,7 +71,8 @@ class App extends Component {
   }
   render() {
     const {
-      coffeePairings
+      coffeePairings,
+      isReverseVisible
     } = this.state
     if (!Object.keys(coffeePairings)) {
       throw new Error('User data wrong format')
@@ -81,7 +89,7 @@ class App extends Component {
         <Footer
           onReversePair={this.reversePair}
           onShuffle={this.shuffle}
-          isReverseVisible={pairingLength > 0}>
+          isReverseVisible={isReverseVisible}>
         </Footer>
       </div>
     );

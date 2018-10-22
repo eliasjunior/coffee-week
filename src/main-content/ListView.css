@@ -20,11 +20,17 @@
     margin-left: 5px
 }
 
-
 /* Small screens */
 @media all and (max-width: 450px) {
     .line-item {
         line-height: 45px;
+    }
+
+    .main-text {
+        text-align: left;
+        font-size: 15px;
+        width: 180px;
+        line-height: 50px;
     }
 }
 
@@ -34,3 +40,4 @@
         line-height: normal;
     }
 }
+

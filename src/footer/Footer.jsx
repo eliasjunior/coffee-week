@@ -3,18 +3,17 @@ import PropTypes from 'prop-types'
 import './Footer.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-function Footer(props) {
-    const isReverseVisible = props.isReverseVisible;
+function Footer( {isReverseVisible, onReversePair, onShuffle}) {
     const displayReverseBtn = () => {
         return isReverseVisible ?
-            <button onClick={props.onReversePair}>
+            <button onClick={onReversePair}>
                 <FontAwesomeIcon icon="exchange-alt" />
                 <span>Reverse Pair</span>
             </button> : false
     }
     return (
         <div className="footer">
-            <button onClick={props.onShuffle}>
+            <button onClick={onShuffle}>
                 <FontAwesomeIcon icon="random" />
                 <span>Shuffle</span>
             </button>

@@ -1,32 +1,20 @@
 
 .dashboard {
+    /* display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: center; */
     min-height: 450px;
-    display: flex;
 }
 .dashboard-logo {
     width: 100px;
     height: 100px;
-    margin: auto;
+    margin: 0 0 1em 1em;
+    float: left;
 }
 .dashboard-text {
-    position: absolute;
-    top: 100px;
+    /* position: absolute;
+    top: 200px;
     left: 20px;
-    width: 100%;
+    width: 100%; */
     color: saddlebrown;
-}
-
-/* Small screens */
-@media all and (max-width: 600px) {
-    .actions-btn {
-        text-align: right;
-    }
-    .main-text {
-        text-align: left;
-        font-size: 15px;
-        width: 180px;
-        line-height: 50px;
-    }
 }
