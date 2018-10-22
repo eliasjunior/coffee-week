@@ -13,14 +13,7 @@ select {
     background: none;
     font-size: 15px;
     font-weight: 500;
-    color: white;
-}
-
-/* Small screens */
-@media all and (max-width: 450px) {
-    .actions-btn {
-        text-align: right;
-    }
+    color:#8c4504;
 }
 
 /* Small screens */

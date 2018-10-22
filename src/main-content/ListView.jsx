@@ -5,22 +5,27 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './ListView.css'
 
 function ListView(props) {
+    const { children } = props
     try {
         const listKeyValues = Object.entries(props.coffeePairings);
         return (
-            <div className='main-content'>
-
-                {listKeyValues.map(([key, pair]) => {
-                    return <div className="line-item" key={key}>
-                        <FontAwesomeIcon icon="hand-holding-usd" 
-                            color="rgb(203, 247, 192)"
-                        />
-                        <span>
-                            {Utils.getFullName(pair.giver)} <FontAwesomeIcon icon="coffee" /> {Utils.getFullName(pair.receiver)}
-                        </span>
-                    </div>
-                })}
+            <div className='list-content'>
+                {children}
+                <div className='main-content'>
+                    {listKeyValues.map(([key, pair]) => {
+                        return <div className="line-item" key={key}>
+                            <FontAwesomeIcon icon="hand-holding-usd"
+                                color="rgb(203, 247, 192)"
+                            />
+                            <span>
+                                {Utils.getFullName(pair.giver)} <FontAwesomeIcon icon="coffee" /> {Utils.getFullName(pair.receiver)}
+                            </span>
+                        </div>
+                    })}
+                </div>
             </div>
+
+
         )
     } catch (error) {
         throw new Error(error)

@@ -11,6 +11,11 @@
   flex: 1 100%;
 }
 
+.validation-message {
+  font-weight: bold;
+  color: tomato
+}
+
 /* Small screens */
 @media all and (max-width: 600px) {
   /* We tell the list share a row */
@@ -23,7 +28,7 @@
 /* Medium and Large screens */
 @media all and (min-width: 600px) {
   .footer    { order: 1; }
-  .main-content { 
+  .list-content { 
     order: 2; 
   }
   .dashboard {

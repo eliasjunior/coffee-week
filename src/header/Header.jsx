@@ -3,14 +3,13 @@ import PropTypes from 'prop-types'
 import './header.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-function Header({children}) {
+function Header() {
     return (
         <div className="header">
             <div className="main-text">
                 <FontAwesomeIcon icon="coffee" />
                 <span>Coffee Week!</span>
             </div>
-            {children}
         </div>
     )
 }

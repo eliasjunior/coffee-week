@@ -4,8 +4,8 @@ import {shallow} from 'enzyme'
 
 describe('ListView', () => {
     it('should render the component', () => {
-        const coffeePairings  = {
-            'test' : {
+        const coffeePairings  = [
+            {
                 giver: {
                     name: {
                         first: 'Ian',
@@ -19,7 +19,7 @@ describe('ListView', () => {
                     }
                 }
             }
-        }
+        ]
         shallow(<ListView coffeePairings={coffeePairings}/>)
     })
 })
