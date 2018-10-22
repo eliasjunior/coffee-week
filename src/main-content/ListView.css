@@ -22,10 +22,6 @@
 
 /* Small screens */
 @media all and (max-width: 450px) {
-    .line-item {
-        line-height: 45px;
-    }
-
     .main-text {
         text-align: left;
         font-size: 15px;
